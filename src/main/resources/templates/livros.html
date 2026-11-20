@@ -1,0 +1,58 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Livros</title>
+</head>
+<body>
+<h1>Livros</h1>
+<p><a href="/">Início</a></p>
+
+<h2>Cadastrar livro</h2>
+<form action="/livros" method="post">
+    <label>Título: <input type="text" name="titulo" required></label>
+    <label>Autor: <input type="text" name="autor" required></label>
+    <label>Categoria: <input type="text" name="categoria" required></label>
+    <label>ISBN: <input type="text" name="isbn" required></label>
+    <button type="submit">Cadastrar</button>
+</form>
+
+<h2>Livros cadastrados</h2>
+<p th:if="${#lists.isEmpty(livros)}">Nenhum livro cadastrado.</p>
+<table th:unless="${#lists.isEmpty(livros)}" border="1">
+    <tr>
+        <th>Título</th>
+        <th>Autor</th>
+        <th>Categoria</th>
+        <th>ISBN</th>
+        <th>Ação</th>
+    </tr>
+    <tr th:each="livro : ${livros}">
+        <td>
+            <input type="text" name="titulo" th:value="${livro.titulo}"
+                   th:attr="form=|editar-${livro.id}|" required>
+        </td>
+        <td>
+            <input type="text" name="autor" th:value="${livro.autor}"
+                   th:attr="form=|editar-${livro.id}|" required>
+        </td>
+        <td>
+            <input type="text" name="categoria" th:value="${livro.categoria}"
+                   th:attr="form=|editar-${livro.id}|" required>
+        </td>
+        <td>
+            <input type="text" name="isbn" th:value="${livro.isbn}"
+                   th:attr="form=|editar-${livro.id}|" required>
+        </td>
+        <td>
+            <form th:id="|editar-${livro.id}|"
+                  th:action="@{/livros/{id}/editar(id=${livro.id})}" method="post"></form>
+            <button type="submit" th:attr="form=|editar-${livro.id}|">Salvar</button>
+            <form th:action="@{/livros/{id}/excluir(id=${livro.id})}" method="post">
+                <button type="submit">Excluir</button>
+            </form>
+        </td>
+    </tr>
+</table>
+</body>
+</html>

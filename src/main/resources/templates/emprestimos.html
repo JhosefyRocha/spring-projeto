@@ -1,0 +1,43 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+    <meta charset="UTF-8">
+    <title>Empréstimos</title>
+</head>
+<body>
+<h1>Empréstimos</h1>
+<p><a href="/">Início</a></p>
+
+<h2>Cadastrar empréstimo</h2>
+<form action="/emprestimos" method="post">
+    <label>Livro: <input type="text" name="livro" required></label>
+    <label>Usuário: <input type="text" name="usuario" required></label>
+    <label>Data do empréstimo: <input type="date" name="dataEmprestimo" required></label>
+    <label>Data de devolução: <input type="date" name="dataDevolucao" required></label>
+    <button type="submit">Cadastrar</button>
+</form>
+
+<h2>Empréstimos cadastrados</h2>
+<p th:if="${#lists.isEmpty(emprestimos)}">Nenhum empréstimo cadastrado.</p>
+<table th:unless="${#lists.isEmpty(emprestimos)}" border="1">
+    <tr>
+        <th>Livro</th>
+        <th>Usuário</th>
+        <th>Data do empréstimo</th>
+        <th>Data de devolução</th>
+        <th>Ação</th>
+    </tr>
+    <tr th:each="emprestimo : ${emprestimos}">
+        <td th:text="${emprestimo.livro}"></td>
+        <td th:text="${emprestimo.usuario}"></td>
+        <td th:text="${emprestimo.dataEmprestimo}"></td>
+        <td th:text="${emprestimo.dataDevolucao}"></td>
+        <td>
+            <form th:action="@{/emprestimos/{id}/excluir(id=${emprestimo.id})}" method="post">
+                <button type="submit">Excluir</button>
+            </form>
+        </td>
+    </tr>
+</table>
+</body>
+</html>
